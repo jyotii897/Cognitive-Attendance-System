@@ -45,13 +45,13 @@
 
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCxxrBGS3Pf3s08581-9zXJT5hRN31dWf8",
-            authDomain: "cognito-2312c.firebaseapp.com",
-            projectId: "cognito-2312c",
-            storageBucket: "cognito-2312c.firebasestorage.app",
-            messagingSenderId: "438124612746",
-            appId: "1:438124612746:web:36df32c03aaafad67bb173",
-            measurementId: "G-QSGSF9SLXN"
+            apiKey: "{{ firebase_config.apiKey }}",
+            authDomain: "{{ firebase_config.authDomain }}",
+            projectId: "{{ firebase_config.projectId }}",
+            storageBucket: "{{ firebase_config.storageBucket }}",
+            messagingSenderId: "{{ firebase_config.messagingSenderId }}",
+            appId: "{{ firebase_config.appId }}",
+            measurementId: "{{ firebase_config.measurementId }}"
         };
 
         const app = initializeApp(firebaseConfig);

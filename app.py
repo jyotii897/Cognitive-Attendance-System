@@ -7,6 +7,9 @@ import numpy as np
 import cvzone
 from datetime import datetime
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 import firebase_admin
 from firebase_admin import credentials
@@ -270,7 +273,16 @@ def video():
 
 @app.route('/loginspage.html')
 def login():
-    return render_template('loginspage.html')
+    firebase_config = {
+        "apiKey": os.getenv("FIREBASE_API_KEY"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
+        "appId": os.getenv("FIREBASE_APP_ID"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID")
+    }
+    return render_template('loginspage.html', firebase_config=firebase_config)
 
 @app.route('/aboutus.html')
 def aboutus():
