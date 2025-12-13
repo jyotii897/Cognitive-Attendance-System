@@ -1,0 +1,11 @@
+numpy
+pandas
+matplotlib
+seaborn
+opencv-python
+cmake
+# dlib
+# face-recognition
+cvzone
+firebase_admin
+flask
