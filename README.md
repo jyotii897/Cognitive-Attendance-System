@@ -133,5 +133,3 @@ graph TD
 
 Contributions are welcome! Please fork this repository and submit a pull request.
 
----
-*Built with ❤️ by the Cognito Team*
