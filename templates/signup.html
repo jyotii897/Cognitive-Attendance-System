@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cognito Login</title>
+    <title>Cognito - Sign Up</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="{{ url_for('static', filename='styles/fras-theme.css') }}" rel="stylesheet" type="text/css" />
@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* Glass Card for Login */
+        /* Glass Card */
         .login-card {
             background: rgba(30, 30, 30, 0.8);
             backdrop-filter: blur(20px);
@@ -65,7 +65,6 @@
         .input-group input {
             width: 100%;
             padding: 15px 15px 15px 50px;
-            /* More padding for icon */
             background: rgba(0, 0, 0, 0.5) !important;
             border: 1px solid #444 !important;
             color: white !important;
@@ -73,11 +72,6 @@
             font-family: inherit;
             font-size: 1rem;
             box-sizing: border-box;
-            /* Critical for alignment */
-        }
-
-        .input-group input::placeholder {
-            color: #888;
         }
 
         .input-group input:focus {
@@ -106,7 +100,6 @@
             box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
         }
 
-        /* Decorative Background Elements */
         .glow-circle {
             position: absolute;
             width: 400px;
@@ -127,6 +120,19 @@
             bottom: -150px;
             right: -150px;
         }
+
+        .switch-link {
+            margin-top: 20px;
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .switch-link:hover {
+            color: var(--accent-green);
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -136,7 +142,7 @@
     <div class="glow-circle bottom-right"></div>
 
     <div class="login-card">
-        <h2>Cognito Login</h2>
+        <h2>Create Account</h2>
 
         <form>
             <div class="input-group">
@@ -149,23 +155,16 @@
                 <input type="password" placeholder="Password" id="password" required>
             </div>
 
-            <button type="submit" class="login-btn" id="login">Access Dashboard</button>
+            <button type="submit" class="login-btn" id="signup-btn">Register</button>
         </form>
 
-        <p style="margin-top: 25px; color: #666; font-size: 0.8rem;">
-            Cognito Attendance System v2.0
-        </p>
-
-        <a href="/signup.html"
-            style="display: block; margin-top: 15px; color: var(--accent-green); text-decoration: none; font-size: 0.9rem;">
-            Don't have an account? Sign Up
-        </a>
+        <a href="/loginspage.html" class="switch-link">Already have an account? Login</a>
     </div>
 
     <!-- Firebase Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "{{ firebase_config.apiKey }}",
@@ -179,30 +178,29 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
-        const loginBtn = document.getElementById('login');
+        const signupBtn = document.getElementById('signup-btn');
 
-        loginBtn.addEventListener("click", (e) => {
+        signupBtn.addEventListener("click", (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Simple visual feedback
-            loginBtn.innerText = "Authenticating...";
+            signupBtn.innerText = "Creating Account...";
 
-            signInWithEmailAndPassword(auth, email, password)
+            createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
+                    alert("Account Created Successfully! Redirecting to dashboard...");
                     window.location.href = "/admin";
                 })
                 .catch((error) => {
                     console.error(error);
                     const errorMessage = error.message;
-                    alert("Authentication Error: " + errorMessage);
-                    loginBtn.innerText = "Access Dashboard";
+                    alert("Registration Failed: " + errorMessage);
+                    signupBtn.innerText = "Register";
                 });
         });
     </script>
-
 </body>
 
 </html>

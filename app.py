@@ -284,6 +284,19 @@ def login():
     }
     return render_template('loginspage.html', firebase_config=firebase_config)
 
+@app.route('/signup.html')
+def signup():
+    firebase_config = {
+        "apiKey": os.getenv("FIREBASE_API_KEY"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
+        "appId": os.getenv("FIREBASE_APP_ID"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID")
+    }
+    return render_template('signup.html', firebase_config=firebase_config)
+
 @app.route('/aboutus.html')
 def aboutus():
     return render_template('aboutus.html')

@@ -4,184 +4,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel</title>
-  <link href="{{ url_for('static', filename='styles/admin.css') }}" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="generator" content="Mobirise v5.9.6, mobirise.com">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-  <link rel="shortcut icon" href="/static/styles/assets/images/cognito-transparent-1-262x262.png" type="image/x-icon">
-  <meta name="description" content="">
+  <title>Cognito Dashboard</title>
 
-
-  <title>admin</title>
-  <link rel="stylesheet" href="/static/styles/assets/web/assets/mobirise-icons2/mobirise2.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/static/styles/assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/styles/assets/bootstrap/css/bootstrap-grid.min.css">
-  <link rel="stylesheet" href="/static/styles/assets/bootstrap/css/bootstrap-reboot.min.css">
-  <link rel="stylesheet" href="/static/styles/assets/dropdown/css/style.css">
-  <link rel="stylesheet" href="/static/styles/assets/theme/css/style.css">
-  <link rel="preload"
-    href="https://fonts.googleapis.com/css?family=Inter+Tight:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"
-    as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Inter+Tight:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap">
-  </noscript>
-  <link rel="preload" as="style" href="/static/styles/assets/mobirise/css/mbr-additional.css">
-  <link rel="stylesheet" href="/static/styles/assets/mobirise/css/mbr-additional.css" type="text/css">
-
-
-
-
-
+  <link href="{{ url_for('static', filename='styles/fras-theme.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-  <section data-bs-version="5.1" class="menu menu2 cid-u6qoiaKzez" once="menu" id="menu02-m">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <h3 style="color: var(--accent-green); margin: 0; font-weight: 700; letter-spacing: 2px;">Cognito</h3>
+      </a>
+      <div style="color: grey;">
+        <span>Dashboard</span> &nbsp;&nbsp; <span>Reports</span> &nbsp;&nbsp; <span>Settings</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-user-circle fa-2x" style="color: #666;"></i>
+        <span style="color: #666;">Admin</span>
+      </div>
+    </div>
+  </nav>
 
+  <div class="container mt-5">
+    <h2 class="mb-4">Dashboard Overview</h2>
 
-    <nav class="navbar navbar-dropdown navbar-expand-lg">
-      <div class="container">
-        <div class="navbar-brand">
-          <span class="navbar-logo">
-            <a href="/admin">
-              <img src="/static/styles/assets/images/cognito-transparent-1-262x262.png" alt="ICON"
-                style="height: 4.2rem;">
-            </a>
-          </span>
-
-        </div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse"
-          data-target="#navbarSupportedContent" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-
-          <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="/">LOG OUT</a></div>
+    <!-- 3 Card Grid -->
+    <div class="row features4">
+      <!-- Take Attendance Card -->
+      <div class="col-md-4 mb-4">
+        <div class="item-wrapper">
+          <i class="fas fa-camera fa-3x" style="color: var(--accent-green);"></i>
+          <h4 class="mb-2">Take Attendance</h4>
+          <p style="color: #888; font-size: 0.9rem;">Face recognition active</p>
+          <a href="/home.html" class="btn btn-primary">Start Camera</a>
         </div>
       </div>
-    </nav>
-  </section>
 
-  <section data-bs-version="5.1" class="features4 cid-ub53Ifahjo" id="features04-q">
-
-
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 content-head">
-          <div class="mbr-section-head mb-5">
-            <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
-              <strong>Academics (Ver 2.0)</strong>
-            </h4>
-
-
+      <!-- Add Students Card -->
+      <div class="col-md-4 mb-4">
+        <div class="item-wrapper">
+          <div class="item-img">
+            <i class="fas fa-user-plus fa-3x" style="color: #fff;"></i>
           </div>
+          <h4 class="mb-2">Add Students</h4>
+          <p style="color: #888; font-size: 0.9rem;">Scan faces or import lists</p>
+          <a href="/admin/add_user" class="btn btn-primary"
+            style="background: transparent; border-color: #666; color: white;">New Enrollment</a>
         </div>
       </div>
+
+      <!-- Attendance Record Card -->
+      <div class="col-md-4 mb-4">
+        <div class="item-wrapper">
+          <div class="item-img">
+            <i class="fas fa-list fa-3x" style="color: #fff;"></i>
+          </div>
+          <h4 class="mb-2">Attendance Record</h4>
+          <p style="color: #888; font-size: 0.9rem;">Review daily and monthly data</p>
+          <a href="/admin/admin_attendance_list" class="btn btn-primary"
+            style="background: transparent; border-color: #666; color: white;">View Logs</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Students Table Section -->
+    <div class="mt-5">
+      <h3 class="mb-4">Students Enrolled</h3>
+
+      {% if data %}
       <div class="row">
-        <div class="item features-image col-12 col-md-6 col-lg-4">
-          <div class="item-wrapper">
-            <div class="item-img">
-              <img src="/static/styles/assets/images/downpic.cc-2227180861-816x785.jpeg" alt="M">
+        {% for student in data %}
+        <div class="col-md-12 mb-2">
+          <!-- Simulated Table Row using Flexbox/Grid or nice Cards -->
+          <div
+            style="display: flex; align-items: center; background: var(--bg-card); padding: 15px; border-radius: 10px; border: 1px solid #333;">
+            <img src="{{ url_for('static', filename='Files/Images/'+ student[0]['id']+'.jpg') }}"
+              style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-green); margin-right: 20px;">
+
+            <div style="flex: 1;">
+              <h5 style="margin: 0;">{{ student[0]['name'] }}</h5>
+              <span style="color: #666; font-size: 0.9rem;">ID: {{ student[0]['id'] }}</span>
             </div>
-            <div class="item-content">
 
-
-
-              <div class="mbr-section-btn item-footer"><a href="/home.html"
-                  class="btn item-btn btn-primary display-7">Take Attendance</a></div>
+            <div style="flex: 1; color: #aaa;">
+              {{ student[0]['major'] }}
             </div>
 
-          </div>
-        </div>
-        <div class="item features-image col-12 col-md-6 col-lg-4">
-          <div class="item-wrapper">
-            <div class="item-img">
-              <img src="/static/styles/assets/images/student-database-icon-vector-816x816.jpeg" alt="M">
-            </div>
-            <div class="item-content">
-
-
-
-              <div class="mbr-section-btn item-footer"><a href="/admin/add_user"
-                  class="btn item-btn btn-primary display-7">Add Students</a></div>
-            </div>
-          </div>
-        </div>
-        <div class="item features-image col-12 col-md-6 col-lg-4">
-          <div class="item-wrapper">
-            <div class="item-img">
-              <img src="/static/styles/assets/images/check-work-attendance-5-512x512.jpg" alt="M">
-            </div>
-            <div class="item-content">
-
-
-
-              <div class="mbr-section-btn item-footer"><a href="/admin/admin_attendance_list"
-                  class="btn item-btn btn-primary display-7">Attendance Record</a></div>
+            <div style="flex: 2; align-items: center; display: flex;">
+              <div
+                style="width: 100%; background: #333; height: 8px; border-radius: 4px; margin-right: 10px; position: relative;">
+                <div
+                  style="width: 75%; background: var(--accent-green); height: 100%; border-radius: 4px; box-shadow: 0 0 10px var(--accent-green);">
+                </div>
+              </div>
+              <span style="color: white; font-weight: bold;">{{ student[0].get('total_attendance', 0) }}</span>
             </div>
           </div>
         </div>
+        {% endfor %}
       </div>
+      {% else %}
+      <p style="color: #666;">No students enrolled yet.</p>
+      {% endif %}
+
     </div>
-  </section>
-  <script src="/static/styles/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="/static/styles/assets/smoothscroll/smooth-scroll.js"></script>
-  <script src="/static/styles/assets/ytplayer/index.js"></script>
-  <script src="/static/styles/assets/dropdown/js/navbar-dropdown.js"></script>
-  <script src="/static/styles/assets/theme/js/script.js"></script>
-
-
-
-  <!-- ######################################################################################################################### -->
-
-  <section class="main">
-    <div class="col-12 content-head">
-      <div class="mbr-section-head mb-5">
-        <h4 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
-          <strong><span style="color: white; font-weight: bold; ">Students Enrolled</span></strong>
-        </h4>
-
-
-      </div>
-      <br />
-      <br /><br />
-    </div>
-    {% for i in range(data|length) %}
-    <div class="users">
-      <div class="card">
-        <img src="{{ url_for('static', filename='Files/Images/'+ data[i][0]['id']+'.jpg') }}" />
-        <h4>{{ data[i][0]['name'] }}</h4>
-        </h4>
-        <p>{{ data[i][0]['major'] }}</p>
-        <div class="per">
-          <table>
-            <tr>
-              <td><span>{{ data[i][0]['total_attendance'] }}</span></td>
-
-            </tr>
-            <tr>
-              <td>Total Attendance</td>
-
-            </tr>
-          </table>
-        </div>
-
-      </div>
-      {% endfor %}
-    </div>
-    <!-- ######################################################################################################################### -->
-  </section>
   </div>
+
+  <script src="/static/styles/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

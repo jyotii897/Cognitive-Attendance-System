@@ -1,0 +1,155 @@
+/* Tech/Cyber Theme Override */
+
+:root {
+  --bg-color: #050510;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(0, 243, 255, 0.2);
+  --primary-neon: #00f3ff;
+  --secondary-neon: #bc13fe;
+  --text-main: #e0e0e0;
+  --text-dim: #a0a0a0;
+  --font-tech: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* fallback */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;700&display=swap');
+
+body {
+  background-color: var(--bg-color);
+  background-image: 
+    linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  color: var(--text-main);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-4, .display-7 {
+  font-family: 'Orbitron', sans-serif;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Navbar */
+.navbar {
+  background: rgba(5, 5, 16, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.navbar-logo img {
+  filter: drop-shadow(0 0 5px var(--primary-neon));
+}
+
+.btn-primary, .item-btn {
+  background: transparent !important;
+  border: 1px solid var(--primary-neon) !important;
+  color: var(--primary-neon) !important;
+  box-shadow: 0 0 5px var(--primary-neon), inset 0 0 5px var(--primary-neon);
+  transition: all 0.3s ease;
+  font-family: 'Orbitron', sans-serif;
+  border-radius: 0 !important; /* Tech buttons are often square */
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.btn-primary:hover, .item-btn:hover {
+  background: var(--primary-neon) !important;
+  color: #000 !important;
+  box-shadow: 0 0 20px var(--primary-neon);
+}
+
+/* Cards (Features) */
+.item-wrapper {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(5px);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px var(--card-border);
+}
+
+.item-img img {
+  filter: grayscale(80%) sepia(20%) hue-rotate(180deg) brightness(90%) contrast(120%);
+  transition: filter 0.3s ease;
+}
+
+.item-wrapper:hover .item-img img {
+  filter: grayscale(0%);
+}
+
+.card {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--secondary-neon);
+  color: white;
+}
+
+/* Student Cards in Admin */
+.users .card {
+  width: 250px;
+  margin: 15px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transition: 0.3s;
+}
+
+.users .card:hover {
+  border-color: var(--primary-neon);
+  box-shadow: 0 0 15px var(--primary-neon);
+}
+
+.users .card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-neon);
+  margin: 20px auto;
+  object-fit: cover;
+}
+
+.users .card h4 {
+  color: var(--primary-neon);
+  font-size: 1.2rem;
+}
+
+.users .card p {
+  color: var(--text-dim);
+}
+
+.users .card table td span {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+/* Table Text */
+table {
+  color: var(--text-main);
+}
+
+/* Titles */
+.mbr-section-title strong {
+  background: linear-gradient(90deg, #fff, var(--primary-neon));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000; 
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-neon); 
+  border-radius: 4px;
+}
