@@ -187,6 +187,15 @@
 
             signupBtn.innerText = "Creating Account...";
 
+            // MOCK MODE BYPASS
+            if (firebaseConfig.apiKey === "mock-key") {
+                setTimeout(() => {
+                    alert("Mock Mode: Account 'Created'! Redirecting...");
+                    window.location.href = "/admin";
+                }, 1000);
+                return;
+            }
+
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;

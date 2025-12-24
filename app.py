@@ -1,39 +1,149 @@
 from flask import Flask, render_template, Response, redirect, url_for, request
-import cv2
 import os
-import pickle
-import face_recognition
-import numpy as np
-import cvzone
-from datetime import datetime
 import json
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
 
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
-from firebase_admin import storage
+# --- MOCKING LOGIC START ---
+MOCK_MODE = False
 
+try:
+    import cv2
+    import face_recognition
+    import numpy as np
+    import cvzone
+    import pickle
+    import firebase_admin
+    from firebase_admin import credentials
+    from firebase_admin import db
+    from firebase_admin import storage
+    
+    # Check for service key
+    if not os.path.exists("serviceAccountKey.json"):
+        raise ImportError("serviceAccountKey.json missing")
 
-app = Flask(__name__)  # initializing
+except ImportError as e:
+    print(f"⚠️  MISSING DEPENDENCY OR KEY: {e}")
+    print("⚠️  SWITCHING TO MOCK MODE. Functionality will be limited.")
+    MOCK_MODE = True
+    import random
+    import time
+    
+    # Mock Objects
+    class MockCV2:
+        CAP_PROP_FRAME_WIDTH = 3
+        CAP_PROP_FRAME_HEIGHT = 4
+        COLOR_BGR2RGB = 1
+        COLOR_BGRA2BGR = 2
+        FONT_HERSHEY_COMPLEX = 1
+        
+        def VideoCapture(self, idx): return self
+        def set(self, prop, val): pass
+        def read(self): 
+            # Return a dummy black frame
+            return True, np.zeros((480, 640, 3), dtype=np.uint8)
+        def imread(self, path):
+             return np.zeros((720, 1280, 3), dtype=np.uint8) # Dummy background
+        def resize(self, img, dim, fx=0, fy=0): return img
+        def cvtColor(self, img, code): return img
+        def imencode(self, ext, img): return True, np.array([0]) # Returns short byte array
+        def putText(self, *args): pass
+        def waitKey(self, delay): pass
+        def getTextSize(self, text, font, scale, thick): return ((0,0), 0)
+        def imdecode(self, buf, flags): return np.zeros((216, 216, 3), dtype=np.uint8)
 
+    class MockNP:
+        uint8 = 'uint8'
+        def argmin(self, a): return 0
+        def zeros(self, shape, dtype): return [ [ [0]*3 ] * shape[1] ] * shape[0] # Very crude list-based fake if needed, but we used real np if avail.
+        def frombuffer(self, b, dtype): return b 
+        def array(self, a): return a
 
-# database credentials
-cred = credentials.Certificate("serviceAccountKey.json")
-firebase_admin.initialize_app(
-    cred,
-    {
-        "databaseURL": "https://cognito-2312c.firebaseio.com/",
-        "storageBucket": "cognito-2312c.firebasestorage.app",
-    },
-)
+    # Try to keep numpy if available, otherwise mock it (unlikely numpy is missing if installed via reqs)
+    try:
+        import numpy as np
+    except:
+        np = MockNP()
 
-bucket = storage.bucket()
+    cv2 = MockCV2()
+    
+    class MockCVZone:
+        def cornerRect(self, img, bbox, rt=0): return img
+        def putTextRect(self, img, text, pos, thickness=1): return img
+    
+    cvzone = MockCVZone()
+    
+    class MockFaceRec:
+        def face_locations(self, img): return []
+        def face_encodings(self, img, locs): return []
+        def compare_faces(self, known, check): return [False]
+        def face_distance(self, known, check): return [1.0]
+        
+    face_recognition = MockFaceRec()
+
+    # Mock Firebase
+    class MockDB:
+        def reference(self, path): return self
+        def get(self): 
+            # Return dummy student info
+            return {
+                "name": "Jyoti (Mock)",
+                "major": "Computer Science",
+                "starting_year": 2021,
+                "total_attendance": 10,
+                "standing": "Good",
+                "year": 3,
+                "last_attendance_time": "2024-01-01 12:00:00"
+            }
+        def child(self, path): return self
+        def set(self, data): print(f"Mock DB Set: {data}")
+        def update(self, data): print(f"Mock DB Update: {data}")
+        def delete(self): print("Mock DB Delete")
+
+    class MockStorage:
+        def bucket(self, name=None): return self
+        def get_blob(self, path): return self
+        def blob(self, path): return self
+        def download_as_string(self): return b'' # Empty bytes
+        def upload_from_filename(self, filename): print(f"Mock Upload: {filename}")
+        def delete(self): print("Mock Delete")
+
+    db = MockDB()
+    storage = MockStorage()
+    firebase_admin = None # Just to act as flag
+
+# --- MOCKING LOGIC END ---
+
+app = Flask(__name__)
+
+if not MOCK_MODE:
+    # database credentials
+    cred = credentials.Certificate("serviceAccountKey.json")
+    firebase_admin.initialize_app(
+        cred,
+        {
+            "databaseURL": "https://cognito-2312c.firebaseio.com/",
+            "storageBucket": "cognito-2312c.firebasestorage.app",
+        },
+    )
+    bucket = storage.bucket()
 
 
 def dataset(id):
+    if MOCK_MODE:
+        # Return static dummy data for demo
+        return {
+            "name": f"Mock Student {id}",
+            "major": "AI Engineering",
+            "starting_year": 2023,
+            "total_attendance": 5,
+            "standing": "Excellent",
+            "year": 2,
+            "last_attendance_time": "2024-12-24 10:00:00"
+        }, np.zeros((216, 216, 3), dtype=np.uint8), 0
+        
     studentInfo = db.reference(f"Students/{id}").get()
     if studentInfo is not None:
         blob = bucket.get_blob(f"static/Files/Images/{id}.jpg")
@@ -55,9 +165,28 @@ already_marked_id_admin = []
 
 
 def generate_frame():
-    # Background and Different Modes
+    if MOCK_MODE:
+        # Generate a dummy video feed with a message
+        while True:
+            # Create black image
+            frame = np.zeros((480, 640, 3), dtype=np.uint8)
+            # Add text
+            cv2.putText(frame, "MOCK MODE - NO WEBCAM/DB", (50, 240), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+            
+            # Encode
+            ret, buffer = cv2.imencode(".jpg", frame)
+            # Use a real buffer if our mock failed, or just bytes
+            if isinstance(buffer, np.ndarray):
+                frame_bytes = buffer.tobytes()
+            else:
+                # Fallback if mock is too simple
+                frame_bytes = b'' 
+                
+            yield (b"--frame\r\n" b"Content-Type: image/jpeg \r\n\r\n" + frame_bytes + b"\r\n")
+            time.sleep(0.1)
+        return
 
-    # video camera
+    # Original Logic
     capture = cv2.VideoCapture(0)
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
@@ -75,8 +204,6 @@ def generate_frame():
     id = -1
     imgStudent = []
     counter = 0
-
-    # encoding loading ---> to identify if the person is in our database or not.... to detect faces that are known or not
 
     file = open("EncodeFile.p", "rb")
     encodeListKnownWithIds = pickle.load(file)
@@ -274,26 +401,26 @@ def video():
 @app.route('/loginspage.html')
 def login():
     firebase_config = {
-        "apiKey": os.getenv("FIREBASE_API_KEY"),
-        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
-        "projectId": os.getenv("FIREBASE_PROJECT_ID"),
-        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
-        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
-        "appId": os.getenv("FIREBASE_APP_ID"),
-        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID")
+        "apiKey": os.getenv("FIREBASE_API_KEY", "mock-key"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "mock-domain"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID", "mock-id"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "mock-bucket"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", "mock-sender"),
+        "appId": os.getenv("FIREBASE_APP_ID", "mock-app-id"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID", "mock-measurement-id")
     }
     return render_template('loginspage.html', firebase_config=firebase_config)
 
 @app.route('/signup.html')
 def signup():
     firebase_config = {
-        "apiKey": os.getenv("FIREBASE_API_KEY"),
-        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN"),
-        "projectId": os.getenv("FIREBASE_PROJECT_ID"),
-        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET"),
-        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID"),
-        "appId": os.getenv("FIREBASE_APP_ID"),
-        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID")
+        "apiKey": os.getenv("FIREBASE_API_KEY", "mock-key"),
+        "authDomain": os.getenv("FIREBASE_AUTH_DOMAIN", "mock-domain"),
+        "projectId": os.getenv("FIREBASE_PROJECT_ID", "mock-id"),
+        "storageBucket": os.getenv("FIREBASE_STORAGE_BUCKET", "mock-bucket"),
+        "messagingSenderId": os.getenv("FIREBASE_MESSAGING_SENDER_ID", "mock-sender"),
+        "appId": os.getenv("FIREBASE_APP_ID", "mock-app-id"),
+        "measurementId": os.getenv("FIREBASE_MEASUREMENT_ID", "mock-measurement-id")
     }
     return render_template('signup.html', firebase_config=firebase_config)
 
@@ -313,19 +440,13 @@ def home():
 #########################################################################################################################
 
 
-
-
-
-
-
-
-
-
-#########################################################################################################################
-
-
 @app.route("/admin")
 def admin():
+    if MOCK_MODE:
+        return render_template("admin.html", data=[({
+            "id": "123", "name": "Jyoti (Mock)", "major": "CS", "total_attendance": 10, "last_attendance_time": "Now"
+        }, None, None)])
+        
     all_student_info = []
     studentIDs, _ = add_image_database()
     for i in studentIDs:
@@ -337,6 +458,11 @@ def admin():
 
 @app.route("/admin/admin_attendance_list", methods=["GET", "POST"])
 def admin_attendance_list():
+    if MOCK_MODE:
+        return render_template("admin_attendance_list.html", data=[({
+            "id": "123", "name": "Jyoti (Mock)", "major": "CS", "total_attendance": 10, "last_attendance_time": "Now"
+        }, None, 0)])
+
     if request.method == "POST":
         if request.form.get("button_student") == "VALUE1":
             already_marked_id_student.clear()
@@ -357,6 +483,9 @@ def admin_attendance_list():
 #########################################################################################################################
 
 def add_image_database():
+    if MOCK_MODE:
+        return [], []
+        
     folderPath = "static/Files/Images"
     imgPathList = os.listdir(folderPath)
     imgList = []
@@ -375,6 +504,9 @@ def add_image_database():
 
 
 def findEncodings(images):
+    if MOCK_MODE:
+        return []
+        
     encodeList = []
 
     for img in images:
@@ -387,6 +519,9 @@ def findEncodings(images):
 
 @app.route("/admin/add_user", methods=["GET", "POST"])
 def add_user():
+    if MOCK_MODE:
+         return render_template("add_user.html")
+         
     id = request.form.get("id", False)
     name = request.form.get("name", False)
     password = request.form.get("password", False)
@@ -440,6 +575,11 @@ def add_user():
 
 @app.route("/admin/edit_user", methods=["POST", "GET"])
 def edit_user():
+    if MOCK_MODE:
+         return render_template("edit_user.html", data={
+            "studentInfo": {"name": "Test"}, "lastlogin": 0, "image": None
+         })
+         
     value = request.form.get("edit_student")
 
     studentInfo, imgStudent, secondElapsed = dataset(value)
@@ -459,6 +599,9 @@ def edit_user():
 
 @app.route("/admin/save_changes", methods=["POST", "GET"])
 def save_changes():
+    if MOCK_MODE:
+        return "Data received successfully! (MOCKED)"
+        
     content = request.get_data()
 
     dic_data = json.loads(content.decode("utf-8"))
@@ -488,6 +631,8 @@ def save_changes():
 
 
 def delete_image(student_id):
+    if MOCK_MODE: return "Successful"
+    
     filepath = f"static/Files/Images/{student_id}.jpg"
 
     os.remove(filepath)
@@ -501,6 +646,8 @@ def delete_image(student_id):
 
 @app.route("/admin/delete_user", methods=["POST", "GET"])
 def delete_user():
+    if MOCK_MODE: return "Successful"
+    
     content = request.get_data()
 
     student_id = json.loads(content.decode("utf-8"))

@@ -189,6 +189,15 @@
             // Simple visual feedback
             loginBtn.innerText = "Authenticating...";
 
+            // MOCK MODE BYPASS
+            if (firebaseConfig.apiKey === "mock-key") {
+                setTimeout(() => {
+                     console.log("Mock Mode: Bypassing Auth");
+                     window.location.href = "/admin";
+                }, 1000);
+                return;
+            }
+
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
