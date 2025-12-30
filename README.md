@@ -10,4 +10,6 @@
 ## Features
 -   Real-time Face Recognition
 -   Admin Dashboard
--   Firebase Integration
+-
+   Firebase Integration
+#video
