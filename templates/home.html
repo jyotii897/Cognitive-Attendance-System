@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cognito - Take Attendance</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/styles/assets/bootstrap/css/bootstrap.min.css">
+  <link href="{{ url_for('static', filename='styles/fras-theme.css') }}" rel="stylesheet" type="text/css" />
+
+  <style>
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      border: 2px solid var(--accent-green);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+      background: #000;
+    }
+
+    .video-container::before {
+      content: "LIVE FEED";
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: var(--accent-green);
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 5px 10px;
+      border-radius: 5px;
+      z-index: 10;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .video-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/admin">
+        <h3 style="color: var(--accent-green); margin: 0; font-weight: 700; letter-spacing: 2px;">Cognito</h3>
+      </a>
+      <div style="color: grey;">
+        <a href="/admin" style="color: var(--text-primary); text-decoration: none;">Dashboard</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <a href="/" class="btn btn-sm btn-outline-danger" style="border-color: #ff4444; color: #ff4444;">Log Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5 text-center">
+    <h2 class="mb-4">Real-Time Recognition</h2>
+
+    <div class="video-container">
+      <img src="{{url_for('video')}}" alt="Video Feed" />
+    </div>
+
+    <div class="mt-4">
+      <p style="color: #666;">System is active and logging attendance automatically.</p>
+      <a href="/admin" class="btn btn-primary" style="width: auto; display: inline-block;">Return to Dashboard</a>
+    </div>
+  </div>
+
+  <script src="/static/styles/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cognito - Add Student</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/styles/assets/bootstrap/css/bootstrap.min.css">
+  <link href="{{ url_for('static', filename='styles/fras-theme.css') }}" rel="stylesheet" type="text/css" />
+
+  <style>
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid #333;
+      border-radius: 15px;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    label {
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    .form-control {
+      background: var(--bg-input) !important;
+      border: 1px solid #444 !important;
+      color: white !important;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-green) !important;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.1) !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/admin">
+        <h3 style="color: var(--accent-green); margin: 0; font-weight: 700; letter-spacing: 2px;">Cognito</h3>
+      </a>
+      <div style="color: grey;">
+        <a href="/admin" style="color: var(--text-primary); text-decoration: none;">Dashboard</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-user-circle fa-2x" style="color: #666;"></i>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">New Student Enrollment</h2>
+
+    <div class="form-card">
+      <form action="/admin/add_user" method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+          <label>Registration Number (ID)</label>
+          <input type="text" class="form-control" placeholder="e.g. STU1024" name="id" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Full Name</label>
+          <input type="text" class="form-control" placeholder="John Doe" name="name" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Email Address</label>
+          <input type="email" class="form-control" placeholder="john@example.com" name="email" required />
+        </div>
+
+        <div class="mb-3">
+          <label>Major / Department</label>
+          <input type="text" class="form-control" placeholder="Computer Science" name="major" required />
+        </div>
+
+        <!-- Hidden Fields -->
+        <input type="hidden" name="total_attendance" value="0" />
+        <input type="hidden" name="last_attendance_date" value="2023-01-01" />
+        <input type="hidden" name="last_attendance_time" value="12:00:00" />
+
+        <div class="mb-4">
+          <label>Student Photo</label>
+          <input type="file" class="form-control" name="image" required />
+          <small style="color: #666;">Upload a clear face image for training.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enroll Student</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/styles/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

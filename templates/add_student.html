@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student - Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="{{ url_for('index') }}" class="btn" style="float: left;">&larr; Back</a>
+            <h1>Add New Student</h1>
+        </header>
+
+        <main>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <form action="{{ url_for('add_student') }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Enter student name">
+                    </div>
+                    <div class="form-group">
+                        <label for="student_id">Student ID</label>
+                        <input type="text" id="student_id" name="student_id" required placeholder="Enter student ID">
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">Save Student Data</button>
+                    <p style="margin-top: 1rem; color: #6b7280; font-size: 0.9rem;">
+                        Note: This will capture face data from the camera in the next step (Not implemented in this
+                        basic demo yet).
+                    </p>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

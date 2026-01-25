@@ -1,0 +1,228 @@
+/* FRAS Theme - Dark Green Dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-dark: #121212;
+    --bg-card: #1e1e1e;
+    --bg-input: #2d2d2d;
+    --accent-green: #00ff88;
+    --accent-green-dim: rgba(0, 255, 136, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --grid-line: rgba(255, 255, 255, 0.05);
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    /* Grid Background Pattern */
+    background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-attachment: fixed;
+}
+
+/* Navbar */
+.navbar {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--grid-line);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+.display-2 {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.mbr-section-title strong {
+    color: var(--text-primary);
+}
+
+/* Dashboard Cards */
+.features4 .item-wrapper {
+    background: var(--bg-card);
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.features4 .item-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: var(--accent-green);
+}
+
+.item-img {
+    margin-bottom: 1.5rem;
+}
+
+.item-img img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: invert(1) brightness(200%);
+    /* Make dark icons white/bright */
+}
+
+/* Circular Icon backgrounds (simulating the FRAS look) */
+.item-img {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+.item-wrapper:hover .item-img {
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+    border-color: var(--accent-green);
+}
+
+/* Buttons */
+.btn-primary,
+.item-btn {
+    background-color: var(--bg-input) !important;
+    border: 1px solid #444 !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px !important;
+    padding: 10px 25px !important;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover,
+.item-btn:hover {
+    background-color: var(--accent-green) !important;
+    color: #000 !important;
+    border-color: var(--accent-green) !important;
+    box-shadow: 0 0 15px var(--accent-green);
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+th {
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+}
+
+td {
+    background-color: var(--bg-card);
+    padding: 1rem;
+    color: var(--text-primary);
+}
+
+tr td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+tr td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Progress Bar (Simulated) */
+.progress-container {
+    background: #333;
+    border-radius: 10px;
+    height: 8px;
+    width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.progress-bar {
+    background: var(--accent-green);
+    height: 100%;
+    border-radius: 10px;
+    width: 80%;
+    /* Default demo width */
+    box-shadow: 0 0 10px var(--accent-green);
+}
+
+/* Student Cards in Grid View (Admin) */
+.users .card {
+    background: var(--bg-card);
+    border: 1px solid #333;
+    border-radius: 15px;
+    color: var(--text-primary);
+}
+
+.users .card:hover {
+    border-color: var(--accent-green);
+}
+
+.users .card h4 {
+    color: var(--accent-green);
+}
+
+/* Login Page Specifics */
+.form-container {
+    background: var(--bg-card);
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+input {
+    background-color: var(--bg-input) !important;
+    border: 1px solid #444 !important;
+    color: white !important;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+input:focus {
+    border-color: var(--accent-green) !important;
+    outline: none;
+}
+
+/* Override Mobirise/Bootstrap defaults */
+.cid-u6qoiaKzez {
+    background: transparent !important;
+}
+
+.cid-ub53Ifahjo {
+    background: transparent !important;
+    padding-top: 2rem;
+}

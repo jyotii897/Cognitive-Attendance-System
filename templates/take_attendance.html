@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Attendance - Attendance System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .video-container {
+            background: #000;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .video-feed {
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="{{ url_for('index') }}" class="btn" style="float: left;">&larr; Back</a>
+            <h1>Marking Attendance</h1>
+        </header>
+
+        <main>
+            <div class="video-container">
+                <img src="{{ url_for('video_feed') }}" alt="Video Feed" class="video-feed">
+            </div>
+            <p style="margin-top: 1rem;">System is scanning for faces...</p>
+        </main>
+    </div>
+</body>
+
+</html>
