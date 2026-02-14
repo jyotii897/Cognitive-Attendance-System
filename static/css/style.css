@@ -1,108 +1,150 @@
 :root {
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --bg: #f9fafb;
-    --card-bg: #ffffff;
-    --text: #1f2937;
-    --text-muted: #6b7280;
+    --bg-dark: #121212;
+    --bg-card: #1e1e1e;
+    --accent-green: #4ade80;
+    /* Neon-ish green */
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1a9;
+    --border-color: #333333;
+    --font-family: 'Inter', sans-serif;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-family);
     margin: 0;
     padding: 0;
-    line-height: 1.6;
 }
 
+/* Navbar */
+.navbar {
+    background-color: var(--bg-dark);
+    /* Transparent/Dark */
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand h3 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--accent-green);
+    text-transform: uppercase;
+}
+
+/* Dashboard Layout */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-}
-
-header {
-    margin-bottom: 3rem;
-}
-
-header h1 {
-    font-size: 3rem;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.card {
-    background: var(--card-bg);
-    border-radius: 1rem;
-    padding: 2rem;
-    text-decoration: none;
-    color: inherit;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid transparent;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    border-color: var(--primary);
-}
-
-.icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    max-width: 1400px;
 }
 
 h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-footer {
-    margin-top: 4rem;
-    color: var(--text-muted);
-}
-
-/* Button & Form Styles */
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-
-label {
-    display: block;
-    margin-bottom: 0.5rem;
     font-weight: 600;
+    margin-bottom: 1.5rem;
 }
 
-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.5rem;
-    font-size: 1rem;
+/* Cards */
+.item-wrapper {
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
-.btn {
-    background-color: var(--primary);
-    color: white;
-    padding: 0.75rem 1.5rem;
+.item-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border-color: var(--accent-green);
+}
+
+/* Icons */
+.item-wrapper i {
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Specific Card Styles */
+/* Take Attendance - Green Glow */
+.features4 .col-md-4:nth-child(1) .item-wrapper i {
+    color: var(--accent-green);
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent-green);
+    color: #000;
+    font-weight: 600;
     border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 1rem;
 }
 
-.btn:hover {
-    background-color: var(--primary-hover);
+.btn-primary:hover {
+    background-color: #22c55e;
+    color: #000;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-outline:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+/* Table / List Styling */
+.student-row {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+}
+
+.student-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-green);
+    margin-right: 1rem;
+}
+
+.progress-bar-bg {
+    background-color: #333;
+    height: 8px;
+    border-radius: 4px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: var(--accent-green);
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
 }

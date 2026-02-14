@@ -1,0 +1,166 @@
+:root {
+    --bg-teal: #193834;
+    /* Dark Teal Background */
+    --accent-yellow: #F2C94C;
+    /* Yellow/Gold for Login Button */
+    --accent-green: #eefbf5;
+    /* Very light green/white for text */
+    --text-white: #ffffff;
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-teal);
+    color: var(--text-white);
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    padding: 1.5rem 2rem;
+    background: transparent;
+}
+
+.navbar-brand h3 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #a494d6;
+    /* The purple-ish logo color from screenshot or keep white */
+    /* Let's stick to a nice logo style or image */
+    text-transform: lowercase;
+    font-family: serif;
+    /* Matches screenshot "cognito" style */
+    font-style: italic;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: var(--text-white) !important;
+    margin-right: 20px;
+    font-weight: 500;
+}
+
+.btn-login {
+    background-color: var(--accent-yellow);
+    color: #193834;
+    font-weight: 700;
+    border-radius: 25px;
+    padding: 10px 30px;
+    border: none;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.btn-login:hover {
+    background-color: #dcb33e;
+    color: #193834;
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 80px 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    max-width: 500px;
+}
+
+.hero-image-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    display: inline-block;
+}
+
+.hero-image {
+    max-width: 100%;
+    border-radius: 10px;
+    border: 3px solid #193834;
+    /* Fake phone border look */
+}
+
+/* Features Section */
+.features-section {
+    padding: 50px 2rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+.feature-card {
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    height: 300px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.card-face-rec {
+    background: linear-gradient(to right, #6ba8a0, #a8d5cf);
+    /* Placeholder teal gradient */
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.feature-content {
+    padding: 2rem;
+    z-index: 2;
+    position: relative;
+    max-width: 60%;
+}
+
+.feature-bg-image {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    object-fit: cover;
+    opacity: 0.8;
+}
+
+.card-tracking {
+    background-color: #2c1a32;
+    /* Dark Purple */
+    color: #fff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-realtime {
+    background-color: #ff8c61;
+    /* Orange/Peach */
+    color: #fff;
+    padding: 2rem;
+}
+
+.card-teacher {
+    background-color: #fff;
+    color: #000;
+    padding: 2rem;
+}

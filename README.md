@@ -85,7 +85,7 @@ graph TD
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/architpr/Cognito-attendance-System.git
+    git clone https://github.com/yourusername/Cognito-attendance-System.git
     cd Cognito-attendance-System
     ```
 

@@ -21,7 +21,14 @@ app = Flask(__name__)  # initializing
 
 
 # database credentials
-cred = credentials.Certificate("serviceAccountKey.json")
+cred_path = "serviceAccountKey.json"
+if os.path.exists(cred_path):
+    cred = credentials.Certificate(cred_path)
+else:
+    # Fallback to env var for Render deployment
+    service_account_info = json.loads(os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON", "{}"))
+    cred = credentials.Certificate(service_account_info)
+
 firebase_admin.initialize_app(
     cred,
     {
@@ -331,7 +338,7 @@ def admin():
     for i in studentIDs:
         student_info = dataset(i)
         if student_info is not None:
-            all_student_info.append(student_info)
+            all_student_info.append(student_info[0])
     return render_template("admin.html", data=all_student_info)
 
 
@@ -526,4 +533,4 @@ def delete_user():
 #########################################################################################################################
 if __name__ == "__main__":
     
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5001)
