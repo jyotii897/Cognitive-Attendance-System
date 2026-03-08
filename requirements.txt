@@ -11,3 +11,4 @@ firebase-admin
 flask
 python-dotenv
 gunicorn
+streamlit
