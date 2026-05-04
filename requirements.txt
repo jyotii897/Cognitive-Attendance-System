@@ -1,8 +1,9 @@
+streamlit
+pandas
 numpy
 opencv-python-headless
 dlib
 face-recognition
 cvzone
 firebase-admin
-flask
 python-dotenv
