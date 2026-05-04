@@ -1,0 +1,8 @@
+venv/
+.git/
+.vscode/
+dlib-19.24.1-cp311-cp311-win_amd64.whl
+*.pyc
+__pycache__/
+static/Files/Images/*
+!static/Files/Images/.gitkeep

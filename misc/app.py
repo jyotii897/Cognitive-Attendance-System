@@ -15,9 +15,9 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(
     cred,
     {
-        "databaseURL": "<paste here>",
+        "databaseURL": "https://cognito-2312c-45d68-default-rtdb.firebaseio.com",
         # database URL
-        "storageBucket": "<paste here>",
+        "storageBucket": "cognito-2312c-45d68.firebasestorage.app",
     },
 )
 

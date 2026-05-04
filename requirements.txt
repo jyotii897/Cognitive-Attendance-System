@@ -1,8 +1,4 @@
-cmake
 numpy
-pandas
-matplotlib
-seaborn
 opencv-python-headless
 dlib
 face-recognition
@@ -10,5 +6,3 @@ cvzone
 firebase-admin
 flask
 python-dotenv
-gunicorn
-streamlit

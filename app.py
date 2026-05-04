@@ -32,8 +32,8 @@ else:
 firebase_admin.initialize_app(
     cred,
     {
-        "databaseURL": "https://cognito-2312c.firebaseio.com/",
-        "storageBucket": "cognito-2312c.firebasestorage.app",
+        "databaseURL": "https://cognito-2312c-45d68-default-rtdb.firebaseio.com",
+        "storageBucket": "cognito-2312c-45d68.firebasestorage.app",
     },
 )
 
@@ -41,12 +41,24 @@ bucket = storage.bucket()
 
 
 def dataset(id):
-    studentInfo = db.reference(f"Students/{id}").get()
-    if studentInfo is not None:
-        blob = bucket.get_blob(f"static/Files/Images/{id}.jpg")
-        if blob is not None:
-            array = np.frombuffer(blob.download_as_string(), np.uint8)
-            imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
+    try:
+        studentInfo = db.reference(f"Students/{id}").get()
+        if studentInfo is not None:
+            # Try to get image from local first, fallback to blob
+            local_img_path = f"static/Files/Images/{id}.jpg"
+            if os.path.exists(local_img_path):
+                imgStudent = cv2.imread(local_img_path)
+            else:
+                try:
+                    blob = bucket.get_blob(f"static/Files/Images/{id}.jpg")
+                    if blob is not None:
+                        array = np.frombuffer(blob.download_as_string(), np.uint8)
+                        imgStudent = cv2.imdecode(array, cv2.COLOR_BGRA2BGR)
+                    else:
+                        imgStudent = None
+                except Exception:
+                    imgStudent = None
+
             if studentInfo["last_attendance_time"] is not None:
                 datetimeObject = datetime.strptime(studentInfo["last_attendance_time"], "%Y-%m-%d %H:%M:%S")
                 secondElapsed = (datetime.now() - datetimeObject).total_seconds()
@@ -54,6 +66,8 @@ def dataset(id):
                 datetimeObject = None
                 secondElapsed = None
             return studentInfo, imgStudent, secondElapsed
+    except Exception as e:
+        print(f"Error fetching data: {e}")
     return None
 
 
@@ -66,6 +80,17 @@ def generate_frame():
 
     # video camera
     capture = cv2.VideoCapture(0)
+    if not capture.isOpened():
+        print("Error: Could not open webcam.")
+        # Return a simple black frame with text for cloud environments
+        img_error = np.zeros((480, 640, 3), dtype=np.uint8)
+        cv2.putText(img_error, "Camera not available on Server", (50, 240), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        _, buffer = cv2.imencode('.jpg', img_error)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+        return
+
     capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
     capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
@@ -374,22 +399,55 @@ def add_image_database():
         studentIDs.append(os.path.splitext(path)[0])
 
         fileName = f"{folderPath}/{path}"
-        bucket = storage.bucket("cognito-2312c.firebasestorage.app")
-        blob = bucket.blob(fileName)
-        blob.upload_from_filename(fileName)
+        try:
+            # Use default bucket if specific one fails
+            current_bucket = storage.bucket("cognito-2312c-45d68.firebasestorage.app")
+            blob = current_bucket.blob(fileName)
+            blob.upload_from_filename(fileName)
+        except Exception as e:
+            print(f"Skipping cloud upload for {path}: Bucket not found or access denied.")
 
     return studentIDs, imgList
 
 
-def findEncodings(images):
+def findEncodings(images, ids):
     encodeList = []
+    validIds = []
 
-    for img in images:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        encode = face_recognition.face_encodings(img)[0]
-        encodeList.append(encode)
+    for img, id in zip(images, ids):
+        if img is not None:
+            try:
+                # 1. Ensure it is uint8 (8-bit)
+                if img.dtype != np.uint8:
+                    img = img.astype(np.uint8)
 
-    return encodeList
+                # 2. Convert to RGB based on the number of channels
+                if len(img.shape) == 3:
+                    if img.shape[2] == 4: # RGBA/BGRA
+                        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGRA2RGB)
+                    elif img.shape[2] == 3: # BGR
+                        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                    else:
+                        continue # Skip unknown channel counts
+                elif len(img.shape) == 2: # Grayscale
+                    img_rgb = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+                else:
+                    continue
+
+                # 3. Detect faces and get encodings
+                encodings = face_recognition.face_encodings(img_rgb)
+                
+                if len(encodings) > 0:
+                    encodeList.append(encodings[0])
+                    validIds.append(id)
+                else:
+                    print(f"WARNING: No face detected for ID {id}. Skipping.")
+            except Exception as e:
+                print(f"ERROR processing image for ID {id}: {e}")
+        else:
+            print(f"WARNING: Could not read image for ID {id}. Skipping.")
+
+    return encodeList, validIds
 
 
 @app.route("/admin/add_user", methods=["GET", "POST"])
@@ -417,7 +475,7 @@ def add_user():
 
     studentIDs, imgList = add_image_database()
 
-    encodeListKnown = findEncodings(imgList)
+    encodeListKnown, studentIDs = findEncodings(imgList, studentIDs)
 
     encodeListKnownWithIds = [encodeListKnown, studentIDs]
 
@@ -519,7 +577,7 @@ def delete_user():
 
     studentIDs, imgList = add_image_database()
 
-    encodeListKnown = findEncodings(imgList)
+    encodeListKnown, studentIDs = findEncodings(imgList, studentIDs)
 
     encodeListKnownWithIds = [encodeListKnown, studentIDs]
 
