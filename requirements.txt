@@ -2,8 +2,7 @@ streamlit
 pandas
 numpy
 opencv-python-headless
-dlib
-face-recognition
+mediapipe
 cvzone
 firebase-admin
 python-dotenv
