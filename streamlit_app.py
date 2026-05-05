@@ -19,7 +19,7 @@ st.set_page_config(page_title="Cognito Attendance", page_icon="🧠", layout="wi
 load_dotenv()
 
 # Initialize MediaPipe Face Detection
-mp_face_detection = mp.solutions.face_detection
+from mediapipe.python.solutions import face_detection as mp_face_detection
 face_detection = mp_face_detection.FaceDetection(model_selection=0, min_detection_confidence=0.5)
 
 # Initialize Firebase only once
