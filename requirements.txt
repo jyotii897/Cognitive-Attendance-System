@@ -3,6 +3,5 @@ pandas
 numpy
 opencv-python-headless
 mediapipe
-cvzone
 firebase-admin
 python-dotenv
